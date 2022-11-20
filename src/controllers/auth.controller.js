@@ -50,10 +50,8 @@ export const checkUser = async (req, res) => {
     try {
         const { user_id } = req
         const { role } = req.body
-        console.log("user_id: ", user_id)
-        console.log("role: ", role)
-        // let resCheck = await authDB.checkUser(user_id, role[0])
-        // if(resCheck == false) return res.status(403).json({ status: 403, message: "Acceso no autorizado" })
+        let resCheck = await authDB.checkUser(user_id, role[0])
+        if(resCheck == false) return res.status(403).json({ status: 403, message: "Acceso no autorizado" })
         res.status(200).json({ status: 200, message: "Ok" })
     } catch (error) {
         console.log(`${error}`)

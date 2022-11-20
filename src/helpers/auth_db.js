@@ -21,7 +21,7 @@ export const getUserByUsername = (username) => {
     let sql = SQL.getUserByUsername
     let params = [username]
     return new Promise((resolve, reject) => {
-        db.query(sql, params, (err, rows, fields) => {
+        db.query(sql, params,(err, rows, fields) => {
             try {
                 resolve(rows)
             } catch (err) {

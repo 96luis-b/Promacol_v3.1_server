@@ -11,6 +11,7 @@ router.get('/logout/:user_id', authCtrl.logout)
 
 
 router.post('/signin',[authJwt.checkDuplicateSession], authCtrl.signin)  
+// router.post('/signin', authCtrl.signin)
 router.post('/checkUser',[authJwt.checkDuplicateSession], authCtrl.checkUser)  
 // router.post('/signin', authJwt.checkDuplicateSession)  
 

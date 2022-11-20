@@ -61,6 +61,9 @@ export const searchCountEmployee = async (req, res) => {
 export const moreLess = async (req, res) => {
     try {
         const { employee, product, status } = req.body
+        // console.log("employee: ", employee)
+        console.log("product: ", product)
+        // console.log("status: ", status)
         if (status == false) {
             return res.status(401).json({
                 status: 401,
@@ -81,7 +84,6 @@ export const moreLess = async (req, res) => {
              return
            })();  
              return res.status(200).json({ status: 200, message: "Ok", body: {}})
-
          }
 
          let resProdDetail = await countEmployeeDB.getEmpProducDetail(resProduction[0].worker_prod_id)

@@ -725,7 +725,7 @@ INSERT INTO `promacol_v3`.`employee`(room_id, ident_document_id, emp_code, name1
 VALUES(NULL, 1, 'AD-1', 'Luis',NULL, 'Bocaranda', NULL, 25342581,'luisbocaranda19@gmail.com', NULL, '1996/12/6', NULL, '2022/1/1', NULL, true);
 
 INSERT INTO `promacol_v3`.`employee`(room_id, ident_document_id, emp_code, name1, name2, lastname1, lastname2, id_number, email, phone, birthday, address, hide_date, dismiss_date, status) 
-VALUES(NULL, , 'AN-1', 'Alberto',NULL, 'Bocaranda', NULL, 25342580,'luisbocaranda19@gmail.com', NULL, '1995/06/06', NULL, '2022/1/1', NULL, true);
+VALUES(NULL, 1, 'AN-1', 'Alberto',NULL, 'Bocaranda', NULL, 25342580,'luisbocaranda19@gmail.com', NULL, '1995/06/06', NULL, '2022/1/1', NULL, true);
 
 INSERT INTO `promacol_v3`.`employee`(room_id, ident_document_id, emp_code, name1, name2, lastname1, lastname2, id_number, email, phone, birthday, address, hide_date, dismiss_date, status) 
 VALUES(NULL, 1, 'CA-1', 'Eddy',NULL, 'Bocaranda', NULL, 5815422,'luisbocaranda19@gmail.com', NULL, '1961/09/17', NULL, '2022/1/1', NULL, true);
@@ -760,18 +760,6 @@ INSERT INTO `promacol_v3`.`product_job`(job_id, prod_id) VALUES(6, 9);
 INSERT INTO  `promacol_v3`.`exchange_rate`(exchange_id, input_currency, output_currency, exchange_value) VALUE (1, "BOLIVAR", "DOLAR", 0.117);
 INSERT INTO  `promacol_v3`.`exchange_rate`(exchange_id, input_currency, output_currency, exchange_value) VALUE (2, "DOLAR", "BOLIVAR", 8.5);
 
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 1);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 3);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 5);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 7);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 9);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 11);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 13);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 15);
-INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 17);
-
-
-
 INSERT INTO  `promacol_v3`.`price`(price_id, currency_id, price) VALUE (1, 1, 0); 
 INSERT INTO  `promacol_v3`.`price`(price_id, currency_id, price) VALUE (2, 2, 0); 
 INSERT INTO  `promacol_v3`.`price`(price_id, currency_id, price) VALUE (3, 1, 0); 
@@ -791,6 +779,15 @@ INSERT INTO  `promacol_v3`.`price`(price_id, currency_id, price) VALUE (16, 2, 0
 INSERT INTO  `promacol_v3`.`price`(price_id, currency_id, price) VALUE (17, 1, 0); 
 INSERT INTO  `promacol_v3`.`price`(price_id, currency_id, price) VALUE (18, 2, 0);
 
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 1);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 3);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 5);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 7);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 9);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 11);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 13);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 15);
+INSERT INTO `promacol_v3`.`exchange_price`(exchange_id, price_id) VALUES(1, 17);
 
 INSERT INTO  `promacol_v3`.`product_price`(prod_id, price_id) VALUE (1, 1);
 INSERT INTO  `promacol_v3`.`product_price`(prod_id, price_id) VALUE (1, 2);

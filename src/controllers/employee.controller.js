@@ -21,8 +21,7 @@ export const signupEmployee = async (req, res) => {
         let resSignup = await employeeDB.signupEmployee(null, 1, emp_code, name1, name2, lastname1, lastname2,
             id_number, null, phone, birthday, null, hide_date, null, true)
         await employeeDB.registerJobByEmployee(parseInt(job.value), resSignup.insertId, dateTime('date'), dateTime('time'), null, null, true)
-
-        res.status(200).json({ status: 200, message: "Registro exitoso" })
+        res.status(200).json({ status: 200, message: "Registro exitoso", body: emp_code})
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -104,11 +103,16 @@ export const getJob = async (req, res) => {
 export const searchEmployee = async (req, res) => {
     try {
         const { parameter } = req.params
+        console.log("parameter: ", parameter)
         let employee;
         if (parameter.length > 5) {
             employee = await employeeDB.getEmployeeByIdentity(parameter)
         } else {
             employee = await employeeDB.getEmployeeByCode(`OB-${parameter}`, null)
+        }
+        if (employee.length == 0) {
+            console.log("dentro de control")
+            return res.status(403).json({ status: 403, message: "Registro no encontrado" })
         }
         if (employee.length == 0) return res.status(403).json({ status: 403, message: "Registro no encontrado" })
         let newDate = orderDate(employee[0].birthday)
@@ -125,6 +129,7 @@ export const searchEmployee = async (req, res) => {
         }
 
         res.status(200).json({ status: 200, message: "Ok", body: body })
+        // res.status(200).json({ status: 200, message: "Ok" })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -259,7 +264,7 @@ export const getProductionByJobGroup = async (req, res) => {
         console.log("body: ", req.body)
         const { date } = req.body
         let resProduct = await employeeDB.getProductionByJobGroup(date)
-        if(resProduct.length == 0) return res.status(401).json({status:401, message: "Registro no encontrado"})
+        if (resProduct.length == 0) return res.status(401).json({ status: 401, message: "Registro no encontrado" })
         console.log("resProduct: ", resProduct)
         res.status(200).json({ status: 200, message: "Ok", body: resProduct })
 
