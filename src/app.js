@@ -8,6 +8,7 @@ import employeeRoutes from './routes/employee.routes'
 import countEmployee from './routes/countEmployee.routes'
 import payroll from './routes/payroll.routes'
 import currencyRoutes from './routes/currency.routes'
+import priceRoutes from './routes/price.routes'
 
 
 import test from './routes/test.routes'
@@ -40,6 +41,7 @@ app.use('/api/employee', employeeRoutes)
 app.use('/api/countEmployee', countEmployee)
 app.use('/api/payroll', payroll) 
 app.use('/api/currency', currencyRoutes) 
+app.use('/api/price', priceRoutes) 
 
 
 app.use('/api/test', test)

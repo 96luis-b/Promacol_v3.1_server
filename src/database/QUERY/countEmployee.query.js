@@ -31,13 +31,14 @@ const countEmployee = {
 		(worker_prod_id, user_id, prod_id, employee_id, quantity, date, time)
 		VALUES(?, ?, ?, ?, ?, ?, ?)`,
 	updateTotalProduction: `UPDATE worker_production SET total=? WHERE worker_prod_id=?`,
-	getEmpProduction: `SELECT WP.employee_id, WP.worker_prod_id, WP.start_date, WPD.prod_id, P.prod_name, 
+	getEmpProduction: `  SELECT WP.employee_id, WP.worker_prod_id, WP.start_date, WPD.prod_id, P.prod_name, 
 		SUM(WPD.quantity) as quantity FROM worker_production_detail AS WPD
 		INNER JOIN worker_production AS WP ON WPD.worker_prod_id = WP.worker_prod_id
 		INNER JOIN product AS P ON WPD.prod_id = P.prod_id
 		WHERE WP.employee_id = ? AND WP.start_date = ?
 		GROUP BY WP.employee_id, WP.start_date, WPD.prod_id, 
-		WPD.prod_id, P.prod_name, quantity, P.prod_name, WP.worker_prod_id`,
+		WPD.prod_id, P.prod_name, P.prod_name, WP.worker_prod_id
+		ORDER BY WPD.prod_id ASC`,
 	updateEmpProductin: `UPDATE worker_production SET status = FALSE WHERE worker_prod_id=?`,
 	getProdByName:`SELECT * FROM product WHERE prod_name=?`,
 }

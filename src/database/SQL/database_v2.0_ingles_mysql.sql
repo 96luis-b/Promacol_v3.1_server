@@ -543,12 +543,12 @@ CREATE TABLE `promacol_v3`.`history_exchange`(
     history_exch_id INT NOT NULL AUTO_INCREMENT,
     exchange_id INT NOT NULL,
     user_id INT NOT NULL,
+    exchange_value DECIMAL(5,2) NOT NULL,
     date DATE NOT NULL,
     time TIME NOT NULL,
     PRIMARY KEY(history_exch_id),
     FOREIGN KEY(exchange_id) REFERENCES exchange_rate(exchange_id),
     FOREIGN KEY(user_id) REFERENCES user(user_id)
-
 );
 
 CREATE TABLE `promacol_v3`.`inventory`(
@@ -662,6 +662,7 @@ INSERT INTO `promacol_v3`.`role`(role_id, role_name) VALUES (10, 'Coordinador de
 -- INSERT INTO room(room_name)VALUES ('Desconche');
 INSERT INTO `promacol_v3`.`room`(room_name)VALUES ('Extracción');
 INSERT INTO `promacol_v3`.`room`(room_name)VALUES ('Revisado');
+-- INSERT INTO `promacol_v3`.`room`(room_name)VALUES ('Desconche');
 
     -- CATEGORIA
 INSERT INTO `promacol_v3`.`category`(category_id, category_name)VALUES (1, 'General');
@@ -669,6 +670,7 @@ INSERT INTO `promacol_v3`.`category`(category_id, category_name)VALUES (2, 'Obre
 
 
     -- PUESTO_TRABAJO
+/* puesto de trabajo para el personal de solo cocktail */
 INSERT INTO `promacol_v3`.`job`(job_id, category_id, job_name)VALUES (1, 2, 'Cangrejero');
 INSERT INTO `promacol_v3`.`job`(job_id, category_id, job_name)VALUES (2, 2, 'Colmillero');
 INSERT INTO `promacol_v3`.`job`(job_id, category_id, job_name)VALUES (3, 2, 'Revisador de carne blanca');
@@ -685,6 +687,7 @@ INSERT INTO `promacol_v3`.`job`(job_id, category_id, job_name)VALUES (12, 1, 'Je
 INSERT INTO `promacol_v3`.`job`(job_id, category_id, job_name)VALUES (13, 1, 'Gerente');
 INSERT INTO `promacol_v3`.`job`(job_id, category_id, job_name)VALUES (14, 1, 'Operario');
 INSERT INTO `promacol_v3`.`job`(job_id, category_id, job_name)VALUES (15, 1, 'Coordinador de producción');
+/* inser de un nuevo puesto de trabajo de supervisor */
 
     -- TIPO DE MEDIDA
 INSERT INTO `promacol_v3`.`measure_type`(descrip)VALUES ('Masa');

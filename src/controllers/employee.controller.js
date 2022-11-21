@@ -192,19 +192,20 @@ export const getEmpProduction = async (req, res) => {
             resEmpCategory.forEach(async (element, i) => {
                 employee.push(element)
                 let resEmpProd = await countEmployeeDB.getEmpProduction(element.employee_id, date)
+                console.log("resEmpProd: ", resEmpProd)
                 if (resEmpProd.length > 0) {
                     employee[i].production = resEmpProd
                 }
                 if (resEmpCategory.length == i + 1) {
-                    resJob.forEach((e, i) => {
+                    resJob.forEach((job, i) => {
                         let emp = []
                         employee.forEach((d, i) => {
-                            if (e.job_id == d.job_id) {
+                            if (job.job_id == d.job_id) {
                                 emp.push(d)
                             }
                         })
                         if (emp.length > 0) {
-                            data.push({ job_name: e.job_name, category: emp })
+                            data.push({ job_name: job.job_name, category: emp })
                         }
                     })
                     return res.status(200).json({ status: 200, message: "Ok", body: data })
