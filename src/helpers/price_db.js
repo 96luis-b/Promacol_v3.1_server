@@ -31,3 +31,18 @@ export const updateExchangeRate = (exchange_value, exchange_id) => {
         })
     })
 }
+
+export const exchangeRateHistory = (exchange_id, user_id, exchange_value, date, time) => {
+    let sql = priceSQL.exchangeRateHistory
+    let params = [exchange_id, user_id, exchange_value, date, time]
+    console.log("params: ", params)
+    return new Promise((resolve, reject) => {
+        db.query(sql, params, (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}

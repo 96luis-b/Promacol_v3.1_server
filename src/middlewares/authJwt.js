@@ -28,20 +28,10 @@ export const verifyToken = async (req, res, next) => {
 
 export const checkDuplicateSession = async(req, res, next) => {
     try {
-        console.log("body: ", req.body)
         const resCheck = await authDB.checkDuplicateSession(req.body.username)
-        console.log("resChek: ", resCheck)
-        // if(resCheck == false){
-        //     console.log("dentro de control")
-        //     let resUser = await authDB.getUserByUsername(req.body.username)
-        //     console.log("resUser: ", resUser)
-            // await authDB.logout(resUser[0].user_id, dateTime('date'), dateTime('time'))
-            // return res.status(401).json({ status: 401, message: 'Usted ya ha iniciado sesión \n Por seguridad seran cerradas todas las sesiones de este usuario' })
-        // }
         if(resCheck[0]?.status || null) {
             console.log("dentro del control")
             let resUser = await authDB.getUserByUsername(req.body.username)
-            console.log("resUser: ", resUser)
             await authDB.logout(resUser[0].user_id, dateTime('date'), dateTime('time'))
             return res.status(401).json({ status: 401, message: 'Usted ya ha iniciado sesión \n Por seguridad seran cerradas todas las sesiones de este usuario' })
         }
