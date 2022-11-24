@@ -33,39 +33,25 @@ export const getProductPrice = async (req, res) => {
         // let after = 1
         let after = null
         var hash = {};
-        // let array = resProductPrice.filter(function(current) {
-        //   var exists = !hash[current.prod_id];
-        //   hash[current.prod_id] = true;
-        //   return exists;
-        // });
+        let array = resProductPrice.filter(function(current) {
+          var exists = !hash[current.prod_id];
+          hash[current.prod_id] = true;
+          return exists;
+        });
         
-        // resProductPrice.forEach((prod, i, pack) => {
-        //     let group = [];
-        //     let status = prod.prod_id 
-        //     if(status != after){
-        //         group = pack.filter(e => e.prod_id == prod.prod_id);
-        //         group.sort(((a, b) => a.prod_id - b.prod_id))
-        //         data.push({ group: group, prod_name: prod.prod_name })
-        //     }
-        //     after = prod.prod_id
-        // }); 
-
-        // console.log(JSON.stringify(array));
-        // console.log("array: ", array);
         resProductPrice.forEach((prod, i, pack) => {
-            // console.log("pack: ", pack)
             let group = [];
             let status = prod.prod_id 
             if(status != after){
                 group = pack.filter(e => e.prod_id == prod.prod_id);
-                group.sort(((a, b) => a.price_id - b.price_id))
-                // console.log("group: ", group)
+                group.sort(((a, b) => a.prod_id - b.prod_id))
                 data.push({ group: group, prod_name: prod.prod_name })
             }
             after = prod.prod_id
-           
-        })
+        }); 
+        
         res.status(200).json({ status: 200, message: "Ok", body: data})
+        // res.status(200).json({ status: 200, message: "Ok", body: resProductPrice})
         // res.status(200).json({ status: 200, message: "Ok" })
     } catch (error) {
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" }) 
@@ -101,3 +87,18 @@ export const updateProdPrice = async (req, res) => {
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
     }
 }
+
+// export const getProductList = async (req, res) => {
+//     try {
+//         console.log("getProductList")
+//         // const {prod_name, price_id, currency_id, currency_name, price} = req.body
+
+//             // await currencyDB.updateProdPrice(price, currency_id, price_id)
+       
+
+//          res.status(200).json({ status: 200, message: "Ok", body: { })
+         
+//     } catch (error) {
+//         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
+//     }
+// }

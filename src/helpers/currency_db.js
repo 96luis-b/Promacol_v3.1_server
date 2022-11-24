@@ -59,6 +59,21 @@ export const getProductPrice = ()=>{
 }
 
 
+export const getProductPriceByName = (currency_name)=>{
+    let sql = SQLCurrency.getProductPriceByName
+    let params = [currency_name]
+    return new Promise((resolve, reject)=>{
+        db.query(sql, params, (err, rows, fields)=>{
+            try{
+                resolve(rows)
+            }catch(err){
+                console.log(err)
+            }
+        })
+    })
+}
+
+
 
 export const updateProdPrice = (price, currency_id, price_id)=>{
     let sql = SQLCurrency.updateProdPrice

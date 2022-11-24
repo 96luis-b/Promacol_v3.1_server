@@ -13,6 +13,8 @@ router.post('/updateExchangeRate', currencyCtrl.updateExchangeRate)
 router.get('/getProductPrice', currencyCtrl.getProductPrice) 
 router.post('/updateProdPrice', currencyCtrl.updateProdPrice) 
 
+// router.get('/getProductList', currencyCtrl.getProductList)
+
 
 
 // router.post('/signin', coinCtrl.getCoin)  

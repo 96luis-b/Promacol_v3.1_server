@@ -10,6 +10,12 @@ const currency = {
         INNER JOIN price AS PRICE ON PRICE.price_id = PP.price_id 
         INNER JOIN currency AS C ON C.currency_id = PRICE.currency_id
         ORDER BY P.prod_id`,
+    getProductPriceByName: ` SELECT P.prod_id, P.prod_name, PRICE.price_id, PRICE.price, 
+        C.currency_id, C.name, C.abbrev FROM product AS P
+        INNER JOIN product_price AS PP ON PP.prod_id = P.prod_id
+        INNER JOIN price AS PRICE ON PRICE.price_id = PP.price_id 
+        INNER JOIN currency AS C ON C.currency_id = PRICE.currency_id
+        WHERE C.name = ? ORDER BY P.prod_id;`,
     updateProdPrice: `UPDATE price SET price = ?
         WHERE currency_id = ? AND price_id=?`,
     getCurrencyByName: `SELECT * FROM currency WHERE name = ?`,
@@ -20,3 +26,4 @@ const currency = {
 }
 
 export default currency
+ 
