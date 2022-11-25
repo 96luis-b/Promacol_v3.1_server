@@ -75,6 +75,7 @@ export const updateProdPrice = async (req, res) => {
     }
 }
 
+// limpiar este metodo, esta muy mal estructurado
 const updateAllProdPrice = async (CURRENCY_EXCHANGE_UNIT, input_currency, output_currency, exchange_value, user_id) => {
     try {
         const date = dateTime('date'), time = dateTime('time');

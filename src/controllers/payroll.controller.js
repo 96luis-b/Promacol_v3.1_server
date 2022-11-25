@@ -10,34 +10,39 @@ import XLSX from "xlsx"
 export const getPayrollEmployee = async (req, res) => {
   try {
     const { emp_code, start_date, end_date } = req.body
+    // console.log("body: ", req.body)
     let total = 0;
     let data = {}, production = []
     let detail;
-    let resPrice = await payrollDB.getPriceByProduct(1)
+    // let resPrice = await payrollDB.getPriceByProduct(1)
     let resProductPrice = await payrollDB.getProductPrice(1)
-    let resExchangeRate = await payrollDB.getExchangeRate(1)
-    let resEmployee = await countEmployeeDB.searchEmployee(`OB-${emp_code}`)
-    let resProdJob = await countEmployeeDB.getProductJob(`OB-${emp_code}`)
-    let resProduction = await countEmployeeDB.getEmpProductionByStatus(`OB-${emp_code}`, start_date, end_date, true)
-    if (resProduction.length != 0) {
-      resProduction.forEach(async (element, i) => {
-        production.push(element)
-        production[i].start_date = orderDate(element.start_date)
-        detail = await countEmployeeDB.getEmpProducDetailByProduct(element.worker_prod_id)
-        detail = sortAsc(detail)
-        totalBsByProduction(production[i], detail, resProductPrice)
-        if ((i + 1) == resProduction.length) {
-          let l = payReckon(production, resExchangeRate[0])
-          data = { totalValues: l, production, employee: resEmployee[0] }
-          return res.status(200).json({ status: 200, message: "Ok", body: data })
-          // return res.status(200).json({ status: 200, message: "Ok" })
-        }
-      });
-    } else {
-      return res.status(403).json({ status: 403, message: "Registro no existente" })
-    }
 
-    // res.status(200).json({ status: 200, message: "Ok"})
+    let resExchangeRate = await payrollDB.getExchangeRate(1)
+
+    let resEmployee = await countEmployeeDB.searchEmployee(`OB-${emp_code}`)
+
+    // let resProdJob = await countEmployeeDB.getProductJob(`OB-${emp_code}`)
+    // console.log("resProdJob: ", resProdJob)
+
+    let resProduction = await countEmployeeDB.getEmpProductionByStatus(`OB-${emp_code}`, start_date, end_date, true)
+    console.log("resProduction: ", resProduction)
+    if (resProduction.length == 0) return res.status(403).json({ status: 403, message: "Registro no existente" })
+    resProduction.forEach(async (element, i) => {
+      production.push(element)
+      production[i].start_date = orderDate(element.start_date)
+      detail = await countEmployeeDB.getEmpProducDetailByProduct(element.worker_prod_id)
+      detail = sortAsc(detail)
+      totalBsByProduction(production[i], detail, resProductPrice)
+      if ((i + 1) == resProduction.length) {
+        let reckon = payReckon(production, resExchangeRate[0])
+        data = { totalValues: reckon, production, employee: resEmployee[0] }
+        return res.status(200).json({ status: 200, message: "Ok", body: data })
+        // return res.status(200).json({ status: 200, message: "Ok" })
+      }
+    });
+
+
+    // res.status(200).json({ status: 200, message: "Ok" })
     // res.status(403).json({ status: 403, message: "Ok"})
   } catch (error) {
     console.log(`${error}`)
@@ -258,12 +263,13 @@ const payReckon = (data, exchange) => {
     totalBs = elem.totalBs + totalBs
     totalDollar = (elem.totalBs * rate) + totalDollar
     if (i + 1 == data.length) {
-      d.totalUnid = totalUnid
+      d.totalUnid = parseFloat(totalUnid).toFixed(2) 
       d.totalBs = parseFloat(totalBs.toFixed(2))
       d.totalDollar = parseFloat(totalDollar.toFixed(2))
       d.payDollar = parseInt(d.totalDollar)
       let q = ((d.totalDollar - (Math.floor(d.totalDollar))) / rate)
       d.payBs = parseFloat(q.toFixed(2))
+      d.rate = rate
       return
     }
   })

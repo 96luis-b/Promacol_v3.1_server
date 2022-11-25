@@ -17,8 +17,9 @@ const countEmployee = {
 	getEmpProducDetailByProduct: `SELECT WPD.prod_id, P.prod_name, SUM(WPD.quantity) as quantity 
 		FROM worker_production_detail AS WPD
 		INNER JOIN product AS P ON WPD.prod_id = P.prod_id
-		WHERE WPD.worker_prod_id = ?
-		GROUP BY WPD.prod_id;`,
+		WHERE WPD.worker_prod_id = 1
+		GROUP BY WPD.prod_id
+		ORDER BY WPD.prod_id ASC`,
 	getProductJob: `SELECT P.prod_id, P.prod_name FROM employee AS E
 		INNER JOIN employee_job AS EJ ON E.employee_id = EJ.employee_id
 		INNER JOIN job AS J ON J.job_id = EJ.job_id

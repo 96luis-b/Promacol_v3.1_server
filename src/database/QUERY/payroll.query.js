@@ -1,10 +1,10 @@
 const payroll = {
 
-	getPayrollEmployee: `SELECT C.coin_id, C.name, C.abbrev, PRICE.price, P.prod_id, P.prod_name  FROM coin AS C
-	    INNER JOIN price PRICE ON C.coin_id=PRICE.coin_id
+	getPayrollEmployee: `SELECT C.currency_id, C.name, C.abbrev, PRICE.price, P.prod_id, P.prod_name  FROM currency AS C
+	    INNER JOIN price PRICE ON C.currency_id=PRICE.currency_id
 	    INNER JOIN product_price AS PP ON PRICE.price_id=PP.price_id
 	    INNER JOIN product AS P ON PP.prod_id=P.prod_id
-	    WHERE C.coin_id = ?`,
+	    WHERE C.currency_id = ?`,
 	// getExchangeRate: `SELECT PRICE.coin_id, PRICE.price, EP.exchange_id, ER.input_currency, ER.output_currency, ER.exchange_value FROM price AS PRICE
 	// 	INNER JOIN exchange_price AS EP ON PRICE.price_id=EP.price_id
 	// 	INNER JOIN exchange_rate AS ER ON EP.exchange_id=ER.exchange_id

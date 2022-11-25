@@ -1,9 +1,9 @@
 import db from '../database'
 import SQL from '../database/QUERY/payroll.query'
 
-export const getPriceByProduct = (coin_id) => {
+export const getPriceByProduct = (currency_id) => {
     let sql = SQL.getPayrollEmployee
-    let params = [coin_id]
+    let params = [currency_id]
     return new Promise((resolve, reject) => {
         db.query(sql, params, (err, rows, fields) => {
             try {
