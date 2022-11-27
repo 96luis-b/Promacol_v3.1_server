@@ -43,9 +43,10 @@ export const getExchangeRate = (exchange_id) => {
     })
 }
 
-export const registerPayEmployee = (employee_id, user_id, date, time, total_bs) => {
+export const registerPayEmployee = (employee_id, user_id, total_bs, totalDollar, payBs, payDollar, date, time) => {
     let sql = SQL.registerPayEmployee
-    let params = [employee_id, user_id, date, time, total_bs]
+    let params = [employee_id, user_id, total_bs, totalDollar, payBs, payDollar, date, time]
+    // console.log("params: ", params)
     return new Promise((resolve, reject) => {
         db.query(sql, params, (err, rows, fields) => {
             try {
@@ -59,9 +60,7 @@ export const registerPayEmployee = (employee_id, user_id, date, time, total_bs) 
 
 export const registerDetailPayEmployee = (payroll_id, prod_id, worker_prod_id, employee_id, quantity, total_bs) => {
     let sql = SQL.registerDetailPayEmployee
-    console.log("sql: ", sql)
     let params = [payroll_id, prod_id, worker_prod_id, employee_id, quantity, total_bs]
-    console.log("params: ", params)
     return new Promise((resolve, reject) => {
         db.query(sql, params, (err, rows, fields) => {
             try {

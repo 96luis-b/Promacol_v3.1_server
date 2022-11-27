@@ -27,8 +27,6 @@ export const signin = async (req, res) => {
         } else {
             return res.status(403).json({ status: 403, message: "Los datos ingresados son incorrectos" })
         }
-        // res.status(200).json({ status: 200, message: "respuesta" })
-        // res.status(500).json({ status: 500, message: "Ha ocurrido un error inesperado" })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })

@@ -14,8 +14,6 @@ export const searchCountEmployee = async (req, res) => {
         if (resAssistance.length == 0) return res.status(403).json({ status: 403, message: "No tiene registro de asistencia" })
         let resProdJob = await countEmployeeDB.getProductJob(`OB-${parameter}`)
         let resProduction = await countEmployeeDB.getEmployeeProduction(`OB-${parameter}`, dateTime("date"), dateTime("date"))
-        console.log("resProduction: ", resProduction)
-        console.log("resProdJob: ", resProdJob)
         if (resProduction.length == 0) {
             resProdJob.forEach(prod => {
                 prod.quantity = 0
@@ -40,7 +38,6 @@ export const searchCountEmployee = async (req, res) => {
             total = total + prod.quantity
         });
 
-        console.log("status production: ", resProduction[0])
         res.status(200).json({
             status: 200, message: "Ok", body: {
                 employee: resEmployee[0],
@@ -49,8 +46,6 @@ export const searchCountEmployee = async (req, res) => {
                 status: resProduction[0].status
             }
         })
-        // res.status(200).json({ status: 200, message: "Ok", body: {}})
-        // res.status(403).json({ status: 403, message: "Ok"})
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -61,9 +56,6 @@ export const searchCountEmployee = async (req, res) => {
 export const moreLess = async (req, res) => {
     try {
         const { employee, product, status } = req.body
-        // console.log("employee: ", employee)
-        console.log("product: ", product)
-        // console.log("status: ", status)
         if (status == false) {
             return res.status(401).json({
                 status: 401,
@@ -102,7 +94,6 @@ export const moreLess = async (req, res) => {
          await countEmployeeDB.newDetailProduction(resProduction[0].worker_prod_id, req.user_id, product.prod_id, employee.employee_id, product.value, date, time )
 
         res.status(200).json({ status: 200, message: "Ok", body: {}})
-        // res.status(400).json({ status: 400, message: "test", body: {} })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })

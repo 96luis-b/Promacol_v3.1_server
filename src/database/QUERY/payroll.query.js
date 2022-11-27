@@ -5,26 +5,12 @@ const payroll = {
 	    INNER JOIN product_price AS PP ON PRICE.price_id=PP.price_id
 	    INNER JOIN product AS P ON PP.prod_id=P.prod_id
 	    WHERE C.currency_id = ?`,
-	// getExchangeRate: `SELECT PRICE.coin_id, PRICE.price, EP.exchange_id, ER.input_currency, ER.output_currency, ER.exchange_value FROM price AS PRICE
-	// 	INNER JOIN exchange_price AS EP ON PRICE.price_id=EP.price_id
-	// 	INNER JOIN exchange_rate AS ER ON EP.exchange_id=ER.exchange_id
-	// 	WHERE PRICE.coin_id = ?`,
-	// getExchangeRate: `SELECT PRICE.currency_id, PRICE.price, PP.prod_id, EP.exchange_id, ER.input_currency, 
-	// 	ER.output_currency, ER.exchange_value FROM price AS PRICE
-	// 	INNER JOIN exchange_price AS EP ON PRICE.price_id=EP.price_id
-	// 	INNER JOIN product_price AS PP ON PP.price_id = PRICE.price_id
-	// 	INNER JOIN exchange_rate AS ER ON EP.exchange_id=ER.exchange_id
-	// 	WHERE PRICE.currency_id = ?`,
-	// getProductPrice: `SELECT PRICE.currency_id, PRICE.price, PP.prod_id, EP.exchange_id, ER.input_currency, 
-	// 	ER.output_currency, ER.exchange_value FROM price AS PRICE
-	// 	INNER JOIN product_price AS PP ON PP.price_id = PRICE.price_id
-	// 	WHERE PRICE.currency_id = ?`,
 	getProductPrice: `SELECT PRICE.currency_id, PRICE.price, PP.prod_id, PP.prod_id FROM price AS PRICE
 		INNER JOIN product_price AS PP ON PP.price_id = PRICE.price_id
 		WHERE PRICE.currency_id = 1;`,
 	getExchangeRate: `SELECT * FROM exchange_rate WHERE exchange_id=?`,
-	registerPayEmployee: `INSERT INTO payroll(employee_id, user_id, date, time, total_bs)
-		VALUES(?,?,?,?,?)`,
+	registerPayEmployee: `INSERT INTO payroll(employee_id, user_id, total_bs, total_dollar, pay_bs, pay_dollar, date, time)
+		VALUES(?,?,?,?,?,?,?,?)`,
 	registerDetailPayEmployee: `INSERT INTO payroll_detail(payroll_id, prod_id, worker_prod_id, employee_id, quantity, total_bs)
 		VALUES(?,?,?,?,?,?)`,
 	getPayrollExecuted: `SELECT Pay.payroll_id, DATE_FORMAT(Pay.date,'%d/%m/%Y') AS date, Pay.time, Pay.user_id,

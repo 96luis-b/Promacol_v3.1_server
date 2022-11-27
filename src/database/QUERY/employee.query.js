@@ -1,14 +1,9 @@
 const employee = {
-    // signupEmployee: `INSERT INTO employee
-    //     (employee_id, room_id, ident_document_id, emp_code, name1, name2, lastname1, lastname2, 
-    //     id_number, email, phone, birthday, address, hide_date, dismiss_date, status) 
-    //     VALUES(LAST_INSERT_ID(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
-    // `,
+   
     signupEmployee: `INSERT INTO employee
         (room_id, ident_document_id, emp_code, name1, name2, lastname1, lastname2, 
         id_number, email, phone, birthday, address, hide_date, dismiss_date, status) 
-        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-    `,
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     registerJobByEmployee: `INSERT INTO employee_job (job_id, employee_id, date_in, time_in, status)
         VALUES(?, ?, ?, TRUE)`,
     getLastIdByEmploye: ` SELECT MAX(employee_id) AS employee_id FROM employee`,

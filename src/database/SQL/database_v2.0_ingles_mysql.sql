@@ -124,9 +124,12 @@ CREATE TABLE `promacol_v3`.`payroll`(
     payroll_id INT NOT NULL AUTO_INCREMENT,
     employee_id INT NOT NULL,
     user_id INT NOT NULL,
+    total_bs DECIMAL(10,2) NOT NULL,
+    total_dollar DECIMAL(10,2) NOT NULL,
+    pay_bs DECIMAL(10,2) NOT NULL,
+    pay_dollar DECIMAL(10,2) NOT NULL,
     date DATE NOT NULL,
     time TIME NOT NULL,
-    total_bs DECIMAL(10,2) NOT NULL,
     PRIMARY KEY(payroll_id),
     FOREIGN KEY(employee_id) REFERENCES employee(employee_id),
     FOREIGN KEY(user_id) REFERENCES user(user_id)

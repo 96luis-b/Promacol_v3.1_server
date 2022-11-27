@@ -10,22 +10,16 @@ import XLSX from "xlsx"
 export const getPayrollEmployee = async (req, res) => {
   try {
     const { emp_code, start_date, end_date } = req.body
-    // console.log("body: ", req.body)
     let total = 0;
     let data = {}, production = []
     let detail;
-    // let resPrice = await payrollDB.getPriceByProduct(1)
     let resProductPrice = await payrollDB.getProductPrice(1)
 
     let resExchangeRate = await payrollDB.getExchangeRate(1)
 
     let resEmployee = await countEmployeeDB.searchEmployee(`OB-${emp_code}`)
 
-    // let resProdJob = await countEmployeeDB.getProductJob(`OB-${emp_code}`)
-    // console.log("resProdJob: ", resProdJob)
-
     let resProduction = await countEmployeeDB.getEmpProductionByStatus(`OB-${emp_code}`, start_date, end_date, true)
-    console.log("resProduction: ", resProduction)
     if (resProduction.length == 0) return res.status(403).json({ status: 403, message: "Registro no existente" })
     resProduction.forEach(async (element, i) => {
       production.push(element)
@@ -37,13 +31,8 @@ export const getPayrollEmployee = async (req, res) => {
         let reckon = payReckon(production, resExchangeRate[0])
         data = { totalValues: reckon, production, employee: resEmployee[0] }
         return res.status(200).json({ status: 200, message: "Ok", body: data })
-        // return res.status(200).json({ status: 200, message: "Ok" })
       }
     });
-
-
-    // res.status(200).json({ status: 200, message: "Ok" })
-    // res.status(403).json({ status: 403, message: "Ok"})
   } catch (error) {
     console.log(`${error}`)
     res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -53,9 +42,17 @@ export const getPayrollEmployee = async (req, res) => {
 export const payEmployee = async (req, res) => {
   try {
     const { employee_id, production, totalValues } = req.body
-    let resPrice = await payrollDB.getPriceByProduct(1)
-    let date = dateTime("date"), time = dateTime("time")    // req.user_id
-    let resReg = await payrollDB.registerPayEmployee(employee_id, 1, date, time, totalValues.totalBs)
+    let date = dateTime("date"), time = dateTime("time")
+    let resReg = await payrollDB.registerPayEmployee(
+      employee_id,
+      req.user_id,
+      totalValues.totalBs,
+      totalValues.totalDollar,
+      totalValues.payBs,
+      totalValues.payDollar,
+      date,
+      time
+    )
     production.forEach((p) => {
       p.detail.forEach(async (d) => {
         await payrollDB.registerDetailPayEmployee(
@@ -71,7 +68,6 @@ export const payEmployee = async (req, res) => {
     })
 
     res.status(200).json({ status: 200, message: "Registrado exitoso" })
-    // res.status(403).json({ status: 403, message: "Ok"})
   } catch (error) {
     console.log(`${error}`)
     res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -154,8 +150,6 @@ export const getPayrollEmployeeReport = async (req, res) => {
         res.status(200).json({ status: 200, message: "Ok", body: elem })
       }
     })
-
-    // res.status(200).json({ status: 200, message: "Ok", body: {} })
   } catch (error) {
     console.log(`${error}`)
     res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -165,7 +159,6 @@ export const getPayrollEmployeeReport = async (req, res) => {
 export const downloadExcelPayroll = async (req, res) => {
   try {
     const { data } = req.body
-    console.log("data: ", data)
     let json = {}
     let dataBox = []
     data.forEach((d, i) => {
@@ -206,7 +199,6 @@ export const downloadExcelPayroll = async (req, res) => {
 export const allLatePay = async (req, res) => {
   try {
     let groupEmployee = [], data = [], employees = []
-    let employee = null
 
     let resAllLatePay = await payrollDB.allLatePay()
     let resExchageRate = await payrollDB.getExchangeRate(1)
@@ -233,8 +225,6 @@ export const allLatePay = async (req, res) => {
         res.status(200).json({ status: 200, message: "Ok", body: data })
       }
     })
-
-    // res.status(200).json({ status: 200, message: "Ok", body:  })
 
   } catch (error) {
     res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -263,7 +253,7 @@ const payReckon = (data, exchange) => {
     totalBs = elem.totalBs + totalBs
     totalDollar = (elem.totalBs * rate) + totalDollar
     if (i + 1 == data.length) {
-      d.totalUnid = parseFloat(totalUnid).toFixed(2) 
+      d.totalUnid = parseFloat(totalUnid).toFixed(2)
       d.totalBs = parseFloat(totalBs.toFixed(2))
       d.totalDollar = parseFloat(totalDollar.toFixed(2))
       d.payDollar = parseInt(d.totalDollar)

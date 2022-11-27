@@ -18,7 +18,6 @@ export const updateExchangeRate = async (req, res) => {
     try {
         const { input_currency, output_currency, exchange_value } = req.body
         let resCurrency = await currencyDB.updateExchangeRate(input_currency, output_currency, exchange_value)
-
         res.status(200).json({ status: 200, message: "Ok", body: { currency: resCurrency, exchangeRate: resExchRate } })
     } catch (error) {
         console.log(`${error}`)
@@ -30,7 +29,6 @@ export const getProductPrice = async (req, res) => {
     try {
         let resProductPrice = await currencyDB.getProductPrice()
         let data = []
-        // let after = 1
         let after = null
         var hash = {};
         let array = resProductPrice.filter(function(current) {
@@ -51,10 +49,9 @@ export const getProductPrice = async (req, res) => {
         }); 
         
         res.status(200).json({ status: 200, message: "Ok", body: data})
-        // res.status(200).json({ status: 200, message: "Ok", body: resProductPrice})
-        // res.status(200).json({ status: 200, message: "Ok" })
     } catch (error) {
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" }) 
+        console.log(error)
     }
 }
  
@@ -87,18 +84,3 @@ export const updateProdPrice = async (req, res) => {
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
     }
 }
-
-// export const getProductList = async (req, res) => {
-//     try {
-//         console.log("getProductList")
-//         // const {prod_name, price_id, currency_id, currency_name, price} = req.body
-
-//             // await currencyDB.updateProdPrice(price, currency_id, price_id)
-       
-
-//          res.status(200).json({ status: 200, message: "Ok", body: { })
-         
-//     } catch (error) {
-//         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
-//     }
-// }

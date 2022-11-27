@@ -9,7 +9,6 @@ export const getExchangeRate = async (req, res) => {
     try {
         const resExchRate = await priceDB.getExchangeRate()
         res.status(200).json({ status: 200, message: "Ok", body: resExchRate })
-        // res.status(500).json({ status: 500, message: "Ha ocurrido un error inesperado" })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -18,7 +17,6 @@ export const getExchangeRate = async (req, res) => {
 
 export const updateExchangeRate = async (req, res) => {
     try {
-        console.log("body: ", req.body)
         const CURRENCY_EXCHANGE_UNIT = 1
         const { exchange_id, exchange_value, input_currency, output_currency } = req.body
         const date = dateTime('date'), time = dateTime('time');
@@ -41,15 +39,8 @@ export const updateExchangeRate = async (req, res) => {
             exchange_value, 
             req.user_id
         )
-       /**
-        *  // console.log("datos: ", datos)
-        // console.log("resp: ", resp)
-        // await priceDB.updateExchangeRate(exchange_value, exchange_id)
-        // await priceDB.exchangeRateHistory(exchange_id, req.user_id, exchange_value, date, time)
-        */
         resExchRate = await priceDB.getExchangeRate()
         res.status(200).json({ status: 200, message: "Cambios realizados con exito", body: resExchRate})
-        // res.status(500).json({ status: 500, message: "Ha ocurrido un error inesperado" })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error", body: datos })
@@ -76,7 +67,7 @@ export const updateProdPrice = async (req, res) => {
 }
 
 // limpiar este metodo, esta muy mal estructurado
-const updateAllProdPrice = async (CURRENCY_EXCHANGE_UNIT, input_currency, output_currency, exchange_value, user_id) => {
+const updateAllProdPrice = async (input_currency, output_currency, exchange_value, user_id) => {
     try {
         const date = dateTime('date'), time = dateTime('time');
         let resPriceInput = await currencyDB.getProductPriceByName(input_currency)

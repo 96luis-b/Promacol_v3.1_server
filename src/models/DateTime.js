@@ -17,31 +17,6 @@ export const dateTime = (type) => {
     return `${year}/${month}/${day} ${hour}:${minute}:${second}`
 }
 
-// export const orderDate = (value)=>{
-//     let text = `${value}`
-//     let newArray = text.split("T")
-//     newArray = newArray.split("-")
-//     console.log("newArray: ", newArray)
-//     // console.log("orderDate: ", `${newArray[0]}-${newArray[1]}-${newArray[2]}`)
-//     // return `${newArray[0]}-${newArray[1]}-${newArray[2]}`
-//     return ""
-
-// }
-
-// export const orderDate = (fulldate) =>{
-//     console.log(`${fulldate}`)
-//     const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-//     let arrayDate = `${fulldate}`.split(' ')
-//     let setDate
-//     month.forEach((element, index) => {
-//         if(`${arrayDate[1]}` == `${element}`){
-//              setDate = `${arrayDate[2]}/${index+1}/${arrayDate[3]}`
-//             return 
-//         }
-//     });
-//     return setDate
-// }
-
 export const orderDate = (fulldate) =>{
     const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     let arrayDate = `${fulldate}`.split(' ')

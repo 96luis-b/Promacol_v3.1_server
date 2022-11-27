@@ -25,7 +25,6 @@ let storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.post('/signupEmployee', [verifySignupEmployee.checkDuplicateIcEmployee], employeeCtrl.signupEmployee)
-// router.post('/signupEmployee', employeeCtrl.signupEmployee)
 router.post('/signupEmployees', upload.single('profile_picture'), employeeCtrl.signupEmployees)
 router.post('/updateEmployee', employeeCtrl.updateEmployee)
 router.post('/getEmpProduction', employeeCtrl.getEmpProduction)

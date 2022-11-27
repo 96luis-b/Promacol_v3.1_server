@@ -4,9 +4,6 @@ import * as employeeDB from '../helpers/employee_db'
 import * as countEmployeeDB from '../helpers/countEmployee_db'
 import { dateTime, orderDate } from '../models/DateTime'
 import { generateCode } from '../models/CodeEmployee'
-// const path = require('path')
-// const multer = require("multer")
-// import fs from "fs-extra";
 import xlsxFile from "read-excel-file/node";
 import XLSX from "xlsx"
 import fs from 'fs'
@@ -36,7 +33,6 @@ export const signupEmployees = async (req, res) => {
         let employees = [];
         let resCountEmployeeByJob = await employeeDB.getCountEmployeeByCategoy(parseInt(2))
         let newCode = resCountEmployeeByJob[0].count - 1
-        console.log("newCode: ", newCode)
         data.forEach(async (element, index, obj) => {
             if (index == 0) return
             let employee = {
@@ -63,7 +59,6 @@ export const signupEmployees = async (req, res) => {
                 res.status(200).json({ status: 200, message: "Registro de empleados exitoso" })
             }
         });
-        // res.status(200).json({ status: 200, message: "Registro exitoso" })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -103,7 +98,6 @@ export const getJob = async (req, res) => {
 export const searchEmployee = async (req, res) => {
     try {
         const { parameter } = req.params
-        console.log("parameter: ", parameter)
         let employee;
         if (parameter.length > 5) {
             employee = await employeeDB.getEmployeeByIdentity(parameter)
@@ -111,7 +105,6 @@ export const searchEmployee = async (req, res) => {
             employee = await employeeDB.getEmployeeByCode(`OB-${parameter}`, null)
         }
         if (employee.length == 0) {
-            console.log("dentro de control")
             return res.status(403).json({ status: 403, message: "Registro no encontrado" })
         }
         if (employee.length == 0) return res.status(403).json({ status: 403, message: "Registro no encontrado" })
@@ -129,7 +122,6 @@ export const searchEmployee = async (req, res) => {
         }
 
         res.status(200).json({ status: 200, message: "Ok", body: body })
-        // res.status(200).json({ status: 200, message: "Ok" })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -157,10 +149,6 @@ export const checkIn = async (req, res) => {
             await employeeDB.checkOutEmployee(resIdEmployee[0].employee_id, date, time)
             return res.status(403).json({ status: 403, message: "Usted ya ha chequeado su entrada", body: null })
         }
-
-        // falta la verificacion de salida antes de la hora estipulada de salida de personal 
-        // 5:00pm
-
         res.status(200).json({ status: 200, message: "Ok", body: {} })
     } catch (error) {
         console.log(`${error}`)
@@ -171,10 +159,6 @@ export const checkIn = async (req, res) => {
 export const ckeckOut = async (req, res) => {
     try {
         const { employee_id } = req.params
-        // let date = dateTime("date")
-
-        // await removeAssistance(employee_id, date)
-
         res.status(200).json({ status: 200, message: "Ok", body: {} })
     } catch (error) {
         console.log(`${error}`)
@@ -192,7 +176,6 @@ export const getEmpProduction = async (req, res) => {
             resEmpCategory.forEach(async (element, i) => {
                 employee.push(element)
                 let resEmpProd = await countEmployeeDB.getEmpProduction(element.employee_id, date)
-                console.log("resEmpProd: ", resEmpProd)
                 if (resEmpProd.length > 0) {
                     employee[i].production = resEmpProd
                 }
@@ -260,13 +243,9 @@ export const getEmployeeAssist = async (req, res) => {
 
 export const getProductionByJobGroup = async (req, res) => {
     try {
-        console.log("getProductionByJobGroup")
-
-        console.log("body: ", req.body)
         const { date } = req.body
         let resProduct = await employeeDB.getProductionByJobGroup(date)
         if (resProduct.length == 0) return res.status(401).json({ status: 401, message: "Registro no encontrado" })
-        console.log("resProduct: ", resProduct)
         res.status(200).json({ status: 200, message: "Ok", body: resProduct })
 
     } catch (error) {
