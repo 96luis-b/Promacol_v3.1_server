@@ -6,11 +6,12 @@ import { dateTime } from '../models/DateTime'
 
 export const verifyToken = async (req, res, next) => {
     try {
+        // console.log("body: ", req.body)
         const token = req.headers["x-access-token"]
         let decoded
         if (!token) return res.status(403).json({ status: 403, message: "No se proporciono un token" })
         decoded = jwt.verify(token, config.SECRET)
-        return res.status(401).json({ status: 401 })
+        // return res.status(401).json({ status: 401 })
         req.user_id = decoded.user_id
         const resUser = await authDB.getUserById(req.user_id)
         if (!resUser) return res.status(404).json({ status: 404, message: "Usuario no encontrado" })
