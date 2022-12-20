@@ -3,7 +3,6 @@ import priceSQL from '../database/QUERY/price.query'
 
 export const getExchangeRate = () => {
     let sql = priceSQL.getExchangeRate
-    let params = []
     return new Promise((resolve, reject) => {
         db.query(sql, (err, rows, fields) => {
             try {
@@ -63,7 +62,6 @@ export const getPrice = (price_id) => {
 export const updatePrice = (price, price_id) => {
     let sql = priceSQL.updatePrice
     let params = [price, price_id]
-    console.log("params: ", params)
     return new Promise((resolve, reject) => {
         db.query(sql, params, (err, rows, fields) => {
             try {

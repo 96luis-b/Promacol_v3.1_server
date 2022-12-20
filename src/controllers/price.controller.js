@@ -23,14 +23,16 @@ export const updateExchangeRate = async (req, res) => {
         let resExchRate = await priceDB.getExchangeRate()
         resExchRate.forEach(e => {
             if (input_currency != e.input_currency) {
-                e.exchange_value = (CURRENCY_EXCHANGE_UNIT / exchange_value).toFixed(2)
+                console.log("swap: ", CURRENCY_EXCHANGE_UNIT / exchange_value)
+                e.exchange_value = (CURRENCY_EXCHANGE_UNIT / exchange_value)
             } else {
                 e.exchange_value = exchange_value
             }
-        });
+        }); 
         resExchRate.forEach(async (e) => {
             await priceDB.updateExchangeRate(e.exchange_value, e.exchange_id)
             await priceDB.exchangeRateHistory(e.exchange_id, req.user_id, e.exchange_value, date, time)
+
         })
         await updateAllProdPrice(
             CURRENCY_EXCHANGE_UNIT, 
@@ -67,7 +69,7 @@ export const updateProdPrice = async (req, res) => {
 }
 
 // limpiar este metodo, esta muy mal estructurado
-const updateAllProdPrice = async (input_currency, output_currency, exchange_value, user_id) => {
+const updateAllProdPrice = async (CURRENCY_EXCHANGE_UNIT, input_currency, output_currency, exchange_value, user_id) => {
     try {
         const date = dateTime('date'), time = dateTime('time');
         let resPriceInput = await currencyDB.getProductPriceByName(input_currency)
