@@ -38,6 +38,13 @@ export const searchCountEmployee = async (req, res) => {
             total = total + prod.quantity
         });
 
+        console.log("response: ", {
+            employee: resEmployee[0],
+            production: resProdJob,
+            total: total,
+            status: resProduction[0].status
+        })
+
         res.status(200).json({
             status: 200, message: "Ok", body: {
                 employee: resEmployee[0],
@@ -62,38 +69,38 @@ export const moreLess = async (req, res) => {
                 message: `El registro de producción del empleado ${employee.emp_code} no puede ser editado`
             })
         }
-         let total = 0
-         let date = dateTime("date"), time = dateTime("time");
-         let resAssistance = await employeeDB.getAssistanceEmployee(employee.emp_code, date)
-         if(resAssistance.length == 0){
-             return res.status(401).json({ status: 401, message: "No hay registro de asistencia", body: {}})
-         }
-         let resProduction = await countEmployeeDB.getEmployeeProduction(employee.emp_code, date, date)
-         if(resProduction.length == 0) {
-             (async function(){ 
-             let resNewProduciton = await countEmployeeDB.newEmployeeProduction(employee.employee_id, 1, date, time)
-             await countEmployeeDB.newDetailProduction(resNewProduciton.insertId, req.user_id, product.prod_id, employee.employee_id, product.value, date, time )
-             return
-           })();  
-             return res.status(200).json({ status: 200, message: "Ok", body: {}})
-         }
+        let total = 0
+        let date = dateTime("date"), time = dateTime("time");
+        let resAssistance = await employeeDB.getAssistanceEmployee(employee.emp_code, date)
+        if (resAssistance.length == 0) {
+            return res.status(401).json({ status: 401, message: "No hay registro de asistencia", body: {} })
+        }
+        let resProduction = await countEmployeeDB.getEmployeeProduction(employee.emp_code, date, date)
+        if (resProduction.length == 0) {
+            (async function () {
+                let resNewProduciton = await countEmployeeDB.newEmployeeProduction(employee.employee_id, 1, date, time)
+                await countEmployeeDB.newDetailProduction(resNewProduciton.insertId, req.user_id, product.prod_id, employee.employee_id, product.value, date, time)
+                return
+            })();
+            return res.status(200).json({ status: 200, message: "Ok", body: {} })
+        }
 
-         let resProdDetail = await countEmployeeDB.getEmpProducDetail(resProduction[0].worker_prod_id)
-         let resProdJob = await countEmployeeDB.getProductJob(employee.emp_code)
-         resProdJob.forEach(prod => {
-             prod.quantity = 0
-             resProdDetail.forEach(element => {
-                 if(prod.prod_id == element.prod_id){
-                     prod.quantity = prod.quantity + element.quantity
-                 }
-             });
-             total = total + prod.quantity
-         });
-         total = total + product.value
-         await countEmployeeDB.updateTotalProduction(resProduction[0].worker_prod_id, total)
-         await countEmployeeDB.newDetailProduction(resProduction[0].worker_prod_id, req.user_id, product.prod_id, employee.employee_id, product.value, date, time )
+        let resProdDetail = await countEmployeeDB.getEmpProducDetail(resProduction[0].worker_prod_id)
+        let resProdJob = await countEmployeeDB.getProductJob(employee.emp_code)
+        resProdJob.forEach(prod => {
+            prod.quantity = 0
+            resProdDetail.forEach(element => {
+                if (prod.prod_id == element.prod_id) {
+                    prod.quantity = prod.quantity + element.quantity
+                }
+            });
+            total = total + prod.quantity
+        });
+        total = total + product.value
+        await countEmployeeDB.updateTotalProduction(resProduction[0].worker_prod_id, total)
+        await countEmployeeDB.newDetailProduction(resProduction[0].worker_prod_id, req.user_id, product.prod_id, employee.employee_id, product.value, date, time)
 
-        res.status(200).json({ status: 200, message: "Ok", body: {}})
+        res.status(200).json({ status: 200, message: "Ok", body: {} })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })

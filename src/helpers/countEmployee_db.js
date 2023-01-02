@@ -87,6 +87,20 @@ export const getProductJob = (emp_code)=>{
     })
 }
 
+export const getProductJobByIdEmp = (employee_id)=>{
+    let sql = SQL.getProductJobByIdEmp
+    let params = [employee_id]
+    return new Promise((resolve, reject) => {
+        db.query(sql, params, (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}
+
 export const newEmployeeProduction = (employee_id, total, start_date, start_time)=>{
     let sql = SQL.newEmployeeProduction
     let params = [employee_id, total, start_date, start_time]

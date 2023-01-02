@@ -26,6 +26,12 @@ const countEmployee = {
 		INNER JOIN product_job AS PJ ON PJ.job_id = J.job_id
 		INNER JOIN product AS P ON P.prod_id = PJ.prod_id
 		WHERE E.emp_code=?`,
+	getProductJobByIdEmp: `SELECT P.prod_id, P.prod_name FROM employee AS E
+		INNER JOIN employee_job AS EJ ON E.employee_id = EJ.employee_id
+		INNER JOIN job AS J ON J.job_id = EJ.job_id
+		INNER JOIN product_job AS PJ ON PJ.job_id = J.job_id
+		INNER JOIN product AS P ON P.prod_id = PJ.prod_id
+		WHERE E.employee_id=?`,
 	newEmployeeProduction: ` INSERT INTO worker_production(employee_id, total, start_date, start_time, status)
 		VALUES(?, ?, ?, ?, TRUE)`,
 	newDetailProduction: `INSERT INTO worker_production_detail
@@ -41,7 +47,7 @@ const countEmployee = {
 		WPD.prod_id, P.prod_name, P.prod_name, WP.worker_prod_id
 		ORDER BY WPD.prod_id ASC`,
 	updateEmpProductin: `UPDATE worker_production SET status = FALSE WHERE worker_prod_id=?`,
-	getProdByName:`SELECT * FROM product WHERE prod_name=?`,
+	getProdByName: `SELECT * FROM product WHERE prod_name=?`,
 }
 
 

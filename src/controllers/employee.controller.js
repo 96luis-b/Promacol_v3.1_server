@@ -176,8 +176,10 @@ export const getEmpProduction = async (req, res) => {
             resEmpCategory.forEach(async (element, i) => {
                 employee.push(element)
                 let resEmpProd = await countEmployeeDB.getEmpProduction(element.employee_id, date)
-                if (resEmpProd.length > 0) {
-                    employee[i].production = resEmpProd
+                let resProdJob = await countEmployeeDB.getProductJobByIdEmp(element.employee_id)
+                let resultAddProdJob = addProdJod(resProdJob, resEmpProd)
+                if (resultAddProdJob.length > 0) {
+                    employee[i].production = resultAddProdJob
                 }
                 if (resEmpCategory.length == i + 1) {
                     resJob.forEach((job, i) => {
@@ -252,4 +254,28 @@ export const getProductionByJobGroup = async (req, res) => {
         console.log("error: ", error)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
     }
+}
+
+const addProdJod = (resProdJob, resEmpProd) => {
+    let newArr = [...resProdJob]
+    let exist = false
+    resProdJob.forEach((prodJob, i) => {
+        exist = false
+        resEmpProd.forEach((prodProduction, j, listProdProduction) => {
+            if (prodJob.prod_id == prodProduction.prod_id) {
+                exist = true
+                newArr[i].quantity = prodProduction.quantity
+                prodProduction.status = true
+                return
+            }
+            newArr.forEach((newProd, z, listNewProd) => {
+                if (newProd.prod_id !== prodProduction.prod_id && z+1 == listNewProd.length &&  exist!= true && prodProduction.status != true) {
+                    newArr.push(prodProduction)
+                    return
+                }
+            });
+        });
+
+    })
+    return newArr
 }
