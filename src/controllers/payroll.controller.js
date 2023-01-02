@@ -92,6 +92,9 @@ export const getPayrollEmployeeReport = async (req, res) => {
             prod_id: word.prod_id,
             prod_name: word.prod_name,
             total_bs: word.total_bs,
+            total_dollar: word.total_pay_dollar,
+            pay_bs: word.pay_bs,
+            pay_dollar: word.pay_dollar,
             payroll_detail_id: word.payroll_detail_id,
             quantity: word.quantity,
           })
@@ -105,6 +108,9 @@ export const getPayrollEmployeeReport = async (req, res) => {
           user_id: element.user_id,
           worker_prod_id: element.worker_prod_id,
           total_bs: element.total_pay_bs,
+          total_dollar: element.total_pay_dollar,
+          pay_bs: element.pay_bs,
+          pay_dollar: element.pay_dollar,
           payroll_detail: payroll_detail
         })
       }

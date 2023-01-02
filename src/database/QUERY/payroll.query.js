@@ -15,7 +15,8 @@ const payroll = {
 		VALUES(?,?,?,?,?,?)`,
 	getPayrollExecuted: `SELECT Pay.payroll_id, DATE_FORMAT(Pay.date,'%d/%m/%Y') AS date, Pay.time, Pay.user_id,
 		PD.payroll_detail_id, PD.worker_prod_id, PD.quantity, PD.total_bs, PD.employee_id,
-		DATE_FORMAT(WP.start_date,'%d/%m/%Y') AS start_date, P.prod_id, P.prod_name, Pay.total_bs AS total_pay_bs
+		DATE_FORMAT(WP.start_date,'%d/%m/%Y') AS start_date, P.prod_id, P.prod_name, Pay.total_bs AS total_pay_bs, 
+		Pay.total_dollar AS total_pay_dollar, Pay.pay_bs, Pay.pay_dollar
 		FROM payroll AS Pay
 		INNER JOIN payroll_detail AS PD ON PD.payroll_id = Pay.payroll_id
 		INNER JOIN product AS P ON P.prod_id = PD.prod_id 
