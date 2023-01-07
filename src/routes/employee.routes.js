@@ -30,13 +30,20 @@ router.post('/updateEmployee', employeeCtrl.updateEmployee)
 router.post('/getEmpProduction', employeeCtrl.getEmpProduction)
 router.post('/parseJsnToExcel', employeeCtrl.parseJsnToExcel)
 router.post('/getProductionByJobGroup', employeeCtrl.getProductionByJobGroup)
+router.post('/addJobProductWorkman', employeeCtrl.addJobProductWorkman)
+router.post('/removeJobProductWorkman', employeeCtrl.removeJobProductWorkman)
+
+
 
 
 router.get('/getEmployeeAssist/:date_in', employeeCtrl.getEmployeeAssist)
 router.get('/getJob', authJwt.verifyToken, employeeCtrl.getJob)
+router.get('/getWorkmanJob', employeeCtrl.getWorkmanJob)
 router.get('/getEmployee/:parameter', employeeCtrl.searchEmployee)
 router.get('/checkIn/:emp_code', employeeCtrl.checkIn)
 router.get('/ckeckOut/:emp_code', employeeCtrl.ckeckOut)
+router.get('/getProductWorkman/:job_id', employeeCtrl.getProductWorkman)
+
 
 
 

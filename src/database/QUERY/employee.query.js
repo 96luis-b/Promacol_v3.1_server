@@ -61,6 +61,23 @@ const employee = {
     getProductionByJobGroup: `SELECT P.prod_id, P.prod_name, SUM(WPD.quantity) AS quantity FROM product AS P
     INNER JOIN worker_production_detail AS WPD ON WPD.prod_id = P.prod_id
     WHERE WPD.date=? GROUP BY P.prod_id ORDER BY P.prod_id ASC`,
+    getWorkmanJob:`SELECT * FROM category AS C
+    INNER JOIN job AS J ON C.category_id = J.category_id
+    INNER JOIN product_job AS PJ ON J.job_id = PJ.job_id
+    INNER JOIN product AS P ON PJ.prod_id = P.prod_id
+    WHERE C.category_id = ?`,
+    getProductWorkmanByJobID:`SELECT P.prod_id AS value, P.prod_name AS label FROM category AS C
+    INNER JOIN job AS J ON C.category_id = J.category_id
+    INNER JOIN product_job AS PJ ON J.job_id = PJ.job_id
+    INNER JOIN product AS P ON PJ.prod_id = P.prod_id
+    WHERE C.category_id = ? AND J.job_id = ?`,
+    getProductWorkman:`SELECT  DISTINCT PJ.prod_id AS value, P.prod_name AS label FROM category AS C
+    INNER JOIN job AS J ON C.category_id = J.category_id
+    INNER JOIN product_job AS PJ ON J.job_id = PJ.job_id
+    INNER JOIN product AS P ON PJ.prod_id = P.prod_id
+    WHERE C.category_id = ?`,
+    addJobProductWorkman:`INSERT INTO product_job(job_id, prod_id) VALUES(?, ?)`,
+    removeJobProductWorkman:`DELETE FROM product_job WHERE job_id = ?  AND prod_id = ?`
 }
 
 export default employee

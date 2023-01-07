@@ -18,7 +18,7 @@ export const signupEmployee = async (req, res) => {
         let resSignup = await employeeDB.signupEmployee(null, 1, emp_code, name1, name2, lastname1, lastname2,
             id_number, null, phone, birthday, null, hide_date, null, true)
         await employeeDB.registerJobByEmployee(parseInt(job.value), resSignup.insertId, dateTime('date'), dateTime('time'), null, null, true)
-        res.status(200).json({ status: 200, message: "Registro exitoso", body: emp_code})
+        res.status(200).json({ status: 200, message: "Registro exitoso", body: emp_code })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -89,6 +89,38 @@ export const getJob = async (req, res) => {
             resJob.forEach(element => jobs.push({ value: `${element.job_id}`, label: element.job_name }));
         }
         res.status(200).json({ status: 200, message: "Ok", body: jobs })
+    } catch (error) {
+        console.log(`${error}`)
+        res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
+    }
+}
+
+export const getWorkmanJob = async (req, res) => {
+    try {
+        let jobObj = {}
+        let categories = []
+        let catefory = {}
+        let products = []
+        let CATEGORI_ID = 2
+        const resJob = await employeeDB.getWorkmanJob(CATEGORI_ID)
+        // console.log("resJob: ", resJob)
+        // let result = resJob.filter((job,index)=>{
+        //     // console.log("job: ", job)
+        //     // console.log("index: ", index)
+        //     return resJob.indexOf(job.job_id) === job.job_id;
+        //   })
+        const arrReduction = resJob.reduce((acc, item) => {
+            if (!acc.includes(item.job_id)) {
+                acc.push(item.job_id);
+            }
+            return acc;
+        }, [])
+
+        let result = orderCategoryJobProd(arrReduction, resJob)
+        console.log("result: ", result)
+        // res.status(200).json({ status: 200, message: "Ok" })
+        res.status(200).json({ status: 200, message: "Ok", body: result })
+        // res.status(200).json({ status: 200, message: "Ok", body: categories })
     } catch (error) {
         console.log(`${error}`)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
@@ -256,6 +288,40 @@ export const getProductionByJobGroup = async (req, res) => {
     }
 }
 
+export const getProductWorkman = async (req, res) => {
+    try {
+        let { job_id } = req.params
+        let CATEGORY_JOB = 2;
+        let resProduct = await employeeDB.getProductWorkman(CATEGORY_JOB)
+        let resProductByJobID = await employeeDB.getProductWorkmanByJobID(CATEGORY_JOB, job_id)
+        let result = newListProdJob(resProduct, resProductByJobID)
+        res.status(200).json({ status: 200, message: "Ok", body: result })
+    } catch (error) {
+        console.log("error: ", error)
+        res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
+    }
+}
+
+export const addJobProductWorkman = async (req, res) => {
+    try {
+        let { job_id, prod_id } = req.body
+        await employeeDB.addJobProductWorkman(job_id, prod_id)
+        res.status(200).json({ status: 200, message: "Se ha agregado exitosamente" })
+    } catch (error) {
+        res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
+    }
+}
+
+export const removeJobProductWorkman = async (req, res) => {
+    try {
+        let { job_id, prod_id } = req.body
+        await employeeDB.removeJobProductWorkman(job_id, prod_id)
+        res.status(200).json({ status: 200, message: "Se ha agregado exitosamente" })
+    } catch (error) {
+        res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
+    }
+}
+
 const addProdJod = (resProdJob, resEmpProd) => {
     let newArr = [...resProdJob]
     let exist = false
@@ -269,7 +335,7 @@ const addProdJod = (resProdJob, resEmpProd) => {
                 return
             }
             newArr.forEach((newProd, z, listNewProd) => {
-                if (newProd.prod_id !== prodProduction.prod_id && z+1 == listNewProd.length &&  exist!= true && prodProduction.status != true) {
+                if (newProd.prod_id !== prodProduction.prod_id && z + 1 == listNewProd.length && exist != true && prodProduction.status != true) {
                     newArr.push(prodProduction)
                     return
                 }
@@ -278,4 +344,36 @@ const addProdJod = (resProdJob, resEmpProd) => {
 
     })
     return newArr
+}
+
+const orderCategoryJobProd = (arrReduction, resJob) => {
+    let newArr = []
+    let jobs = []
+    let jobJson = {}
+    arrReduction.forEach((job_id, i) => {
+        newArr = []
+        resJob.forEach((job, j, listJob) => {
+            if (job_id == job.job_id) {
+                newArr.push({ prod_id: job.prod_id, prod_name: job.prod_name })
+                jobJson.job_id = job.job_id
+                jobJson.job_name = job.job_name
+                return
+            }
+        });
+        jobs.push({
+            job_name: jobJson.job_name,
+            job_id: jobJson.job_id,
+            products: newArr
+        })
+    })
+    return jobs
+}
+
+const newListProdJob = (allProdJob, prodJob) => {
+    prodJob.forEach(itemProdJob => {
+        let newArr = []
+        newArr = allProdJob.filter(itemProd => itemProd.value != itemProdJob.value)
+        allProdJob = newArr
+    })
+    return allProdJob
 }

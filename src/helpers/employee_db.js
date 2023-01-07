@@ -62,6 +62,49 @@ export const getJob = () => {
     })
 }
 
+export const getWorkmanJob = (category_id) => {
+    let sql = SQL_Employee.getWorkmanJob
+    let params = [category_id]
+    return new Promise((resolve, reject) => {
+        db.query(sql, params,  (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}
+
+export const getProductWorkman = (category_id) => {
+    let sql = SQL_Employee.getProductWorkman
+    let params = [category_id]
+    return new Promise((resolve, reject) => {
+        db.query(sql, params,  (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}
+
+
+export const getProductWorkmanByJobID = (category_id, job_id) => {
+    let sql = SQL_Employee.getProductWorkmanByJobID
+    let params = [category_id, job_id]
+    return new Promise((resolve, reject) => {
+        db.query(sql, params,  (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}
+
 export const checkEmployeeByIc = (ic) => {
     let sql = SQL_Employee.checkEmployeeByIc
     let params = [ic]
@@ -316,6 +359,34 @@ export const getEmployeeAssist = (date_in, category_id) => {
 export const getProductionByJobGroup = (date) => {
     let sql = SQL_Employee.getProductionByJobGroup
     let params = [date]
+    return new Promise((resolve, reject) => {
+        db.query(sql, params, (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}
+
+export const addJobProductWorkman = (job_id, prod_id) => {
+    let sql = SQL_Employee.addJobProductWorkman
+    let params = [job_id, prod_id]
+    return new Promise((resolve, reject) => {
+        db.query(sql, params, (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}
+
+export const removeJobProductWorkman = (job_id, prod_id) => {
+    let sql = SQL_Employee.removeJobProductWorkman
+    let params = [job_id, prod_id]
     return new Promise((resolve, reject) => {
         db.query(sql, params, (err, rows, fields) => {
             try {
