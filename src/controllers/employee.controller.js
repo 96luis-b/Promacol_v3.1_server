@@ -239,13 +239,18 @@ export const getEmpProduction = async (req, res) => {
 
 export const parseJsnToExcel = async (req, res) => {
     try {
-        const workSheet = XLSX.utils.json_to_sheet(students)
-        const workBook = XLSX.utils.book_new(students)
+        const data = [
+            { name: 'Diary', code: 'diary_code', author: 'Pagorn' },
+            { name: 'Note', code: 'note_code', author: 'Pagorn' },
+            { name: 'Medium', code: 'medium_code', author: 'Pagorn' },
+        ]
+        const workSheet = XLSX.utils.json_to_sheet(data)
+        const workBook = XLSX.utils.book_new()
 
-        XLSX.utils.book_append_sheet(workBook, workSheet, "students")
+        XLSX.utils.book_append_sheet(workBook, workSheet, "test1")
         XLSX.write(workBook, { bookType: 'xlsx', type: "buffer" })
         XLSX.write(workBook, { bookType: 'xlsx', type: 'binary' })
-        XLSX.writeFile(workBook, "./src/public/upload/students.xlsx")
+        XLSX.writeFile(workBook, "./src/public/upload/test.xlsx")
 
         res.status(200).json({ status: 200, message: "Ok", body: {} })
     } catch (error) {
