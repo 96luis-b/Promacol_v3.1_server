@@ -14,7 +14,7 @@ export const searchCountEmployee = async (req, res) => {
         if (resAssistance.length == 0) return res.status(403).json({ status: 403, message: "No tiene registro de asistencia" })
         let resProdJob = await countEmployeeDB.getProductJob(`OB-${parameter}`)
         let resProduction = await countEmployeeDB.getEmployeeProduction(`OB-${parameter}`, dateTime("date"), dateTime("date"))
-        // console.log("'resProdJob: ",resProdJob)
+        
         if (resProduction.length == 0) {
             resProdJob.forEach(prod => {
                 prod.quantity = 0
@@ -27,24 +27,25 @@ export const searchCountEmployee = async (req, res) => {
             })
         }
 
-        let resProdDetail = await countEmployeeDB.getEmpProducDetail(resProduction[0].worker_prod_id)
+        let resProdDetail = await countEmployeeDB.getEmpProducDetailByProduct(resProduction[0].worker_prod_id)
         console.log("resProdDetail: ", resProdDetail)
         resProdJob.forEach(prod => {
             prod.quantity = 0
             resProdDetail.forEach(element => {
                 if (prod.prod_id == element.prod_id) {
-                    prod.quantity = prod.quantity + element.quantity
+                    prod.quantity = parseInt(prod.quantity) + parseInt(element.quantity)
                 }
             });
-            total = total + prod.quantity
+        });
+        let newList = newListProdJob(resProdDetail, resProdJob)
+        newList.forEach(element => {
+            resProdJob.push(element)
         });
 
-        // console.log("response: ", {
-        //     employee: resEmployee[0],
-        //     production: resProdJob,
-        //     total: total,
-        //     status: resProduction[0].status
-        // })
+        resProdJob.forEach(prod => {
+            total += parseInt(prod.quantity)
+        });
+      
 
         res.status(200).json({
             status: 200, message: "Ok", body: {
@@ -109,11 +110,11 @@ export const moreLess = async (req, res) => {
 }
 
 
-const newListProdJob = (allProdJob, prodJob) => {
+const newListProdJob = (prodDetail, prodJob) => {
     prodJob.forEach(itemProdJob => {
         let newArr = []
-        newArr = allProdJob.filter(itemProd => itemProd.value != itemProdJob.value)
-        allProdJob = newArr
+        newArr = prodDetail.filter(itemProd => itemProd.prod_id != itemProdJob.prod_id)
+        prodDetail = newArr
     })
-    return allProdJob
+    return prodDetail
 }
