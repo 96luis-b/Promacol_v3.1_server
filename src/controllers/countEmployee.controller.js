@@ -14,6 +14,7 @@ export const searchCountEmployee = async (req, res) => {
         if (resAssistance.length == 0) return res.status(403).json({ status: 403, message: "No tiene registro de asistencia" })
         let resProdJob = await countEmployeeDB.getProductJob(`OB-${parameter}`)
         let resProduction = await countEmployeeDB.getEmployeeProduction(`OB-${parameter}`, dateTime("date"), dateTime("date"))
+        // console.log("'resProdJob: ",resProdJob)
         if (resProduction.length == 0) {
             resProdJob.forEach(prod => {
                 prod.quantity = 0
@@ -27,7 +28,7 @@ export const searchCountEmployee = async (req, res) => {
         }
 
         let resProdDetail = await countEmployeeDB.getEmpProducDetail(resProduction[0].worker_prod_id)
-
+        console.log("resProdDetail: ", resProdDetail)
         resProdJob.forEach(prod => {
             prod.quantity = 0
             resProdDetail.forEach(element => {
@@ -38,12 +39,12 @@ export const searchCountEmployee = async (req, res) => {
             total = total + prod.quantity
         });
 
-        console.log("response: ", {
-            employee: resEmployee[0],
-            production: resProdJob,
-            total: total,
-            status: resProduction[0].status
-        })
+        // console.log("response: ", {
+        //     employee: resEmployee[0],
+        //     production: resProdJob,
+        //     total: total,
+        //     status: resProduction[0].status
+        // })
 
         res.status(200).json({
             status: 200, message: "Ok", body: {
@@ -107,3 +108,12 @@ export const moreLess = async (req, res) => {
     }
 }
 
+
+const newListProdJob = (allProdJob, prodJob) => {
+    prodJob.forEach(itemProdJob => {
+        let newArr = []
+        newArr = allProdJob.filter(itemProd => itemProd.value != itemProdJob.value)
+        allProdJob = newArr
+    })
+    return allProdJob
+}

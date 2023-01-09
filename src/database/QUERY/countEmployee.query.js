@@ -13,7 +13,8 @@ const countEmployee = {
 	getEmployeeProductionDetail: `SELECT WPD.prod_id, WPD.quantity, P.prod_name FROM worker_production_detail AS WPD
 		INNER JOIN product AS P ON WPD.prod_id = P.prod_id
 		WHERE WPD.worker_prod_id=? AND date=?`,
-	getEmpProducDetail: `SELECT prod_id, quantity FROM worker_production_detail WHERE worker_prod_id=?`,
+	// getEmpProducDetail: `SELECT prod_id, quantity FROM worker_production_detail WHERE worker_prod_id=?`,
+	getEmpProducDetail: `SELECT prod_id, quantity FROM worker_production_detail WHERE worker_prod_idf=?`,
 	getEmpProducDetailByProduct: `SELECT WPD.prod_id, P.prod_name, SUM(WPD.quantity) as quantity 
 		FROM worker_production_detail AS WPD
 		INNER JOIN product AS P ON WPD.prod_id = P.prod_id
