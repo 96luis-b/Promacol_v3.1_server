@@ -290,14 +290,14 @@ export const getProductionByJobGroup = async (req, res) => {
     } catch (error) {
         console.log("error: ", error)
         res.status(500).json({ status: 500, message: "Ha ocurrido un error" })
-    }
+    }M
 }
 
 export const getProductWorkman = async (req, res) => {
     try {
         let { job_id } = req.params
         let CATEGORY_JOB = 2;
-        let resProduct = await employeeDB.getProductWorkman(CATEGORY_JOB)
+        let resProduct = await employeeDB.getProduct()
         let resProductByJobID = await employeeDB.getProductWorkmanByJobID(CATEGORY_JOB, job_id)
         let result = newListProdJob(resProduct, resProductByJobID)
         res.status(200).json({ status: 200, message: "Ok", body: result })

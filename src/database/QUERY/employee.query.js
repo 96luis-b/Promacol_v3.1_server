@@ -77,7 +77,8 @@ const employee = {
     INNER JOIN product AS P ON PJ.prod_id = P.prod_id
     WHERE C.category_id = ?`,
     addJobProductWorkman:`INSERT INTO product_job(job_id, prod_id) VALUES(?, ?)`,
-    removeJobProductWorkman:`DELETE FROM product_job WHERE job_id = ?  AND prod_id = ?`
+    removeJobProductWorkman:`DELETE FROM product_job WHERE job_id = ?  AND prod_id = ?`,
+    getProduct: `SELECT  prod_id AS value, prod_name AS label FROM product ORDER BY prod_id ASC`,
 }
 
 export default employee

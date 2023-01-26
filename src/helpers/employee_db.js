@@ -397,3 +397,16 @@ export const removeJobProductWorkman = (job_id, prod_id) => {
         })
     })
 }
+
+export const getProduct = () => {
+    let sql = SQL_Employee.getProduct
+    return new Promise((resolve, reject) => {
+        db.query(sql, (err, rows, fields) => {
+            try {
+                resolve(rows)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    })
+}
